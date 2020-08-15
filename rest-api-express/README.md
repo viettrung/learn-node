@@ -10,6 +10,7 @@ docker-compose run --rm --service-ports nod_dev_env
 yarn init -y
 yarn add express
 yarn add -D nodemon
+yarn add -D eslint
 ```
 
 ## Config nodemon
