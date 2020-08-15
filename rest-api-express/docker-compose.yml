@@ -1,9 +1,19 @@
 version: "3"
 services:
-  nod_dev_env:
+  app:
     build: .
-    container_name: node-docker
+    container_name: app
     ports:
       - 8080:3000
     volumes:
       - ./:/home/app
+    links: 
+      - mongo
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports: 
+      - 27017:27017
+    volumes: 
+      - ./data:/data/db
