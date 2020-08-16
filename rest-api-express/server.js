@@ -19,7 +19,13 @@ mongoose.connect(db_link, (err) => {
 
 bookRouter.route('/books')
   .get((req, res) => {
-    book.find((err, books) => {
+
+    const query = {}
+    if (req.query.title) {
+      query.title = req.query.title
+    }
+
+    book.find(query, (err, books) => {
       if (err) {
         return res.send(err)
       }
