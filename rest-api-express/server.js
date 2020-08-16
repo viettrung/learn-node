@@ -1,13 +1,17 @@
 const mongoose = require('mongoose')
 const express = require('express')
+const bodyParser = require('body-parser')
 
 const app = express()
-const bookRouter = express.Router()
 
 const PORT = process.env.PORT || 8080
 const db_link = 'mongodb://mongo:27017/bookAPI'
 
-const book = require('./models/bookModel')
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
+
+const Book = require('./models/bookModel')
+const bookRouter = require('./routes/bookRouter')(Book)
 
 mongoose.connect(db_link, (err) => {
   if (err) {
@@ -17,23 +21,6 @@ mongoose.connect(db_link, (err) => {
   }
 })
 
-bookRouter.route('/books')
-  .get((req, res) => {
-
-    const query = {}
-    if (req.query.title) {
-      query.title = req.query.title
-    }
-
-    book.find(query, (err, books) => {
-      if (err) {
-        return res.send(err)
-      }
-
-      return res.send(books)
-    })
-
-  })
 
 app.use('/api', bookRouter)
 
