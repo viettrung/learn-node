@@ -41,15 +41,39 @@ function routes(Book) {
 	bookRouter.route('/books/:bookId')
 		.get((req, res) => res.json(req.book))
 		.put((req, res) => {
-
 			const { book } = req
 			book.title = req.body.title
 			book.genre = req.book.genre
 			book.author = req.body.author
 			book.read = req.body.read
-			book.save()
-			return res.send(book)
+			
+			book.save(err => {
+				if (err) {
+					res.send(err)
+				}
+				return res.json(book)
+			})
+		})
+		.patch((req, res) => {
+			const {book} = req
+			const {body} = req
 
+			if (body._id) {
+				delete body._id
+			}
+
+			Object.entries(body).forEach(item => {
+				const key = item[0]
+				const value = item[1]
+				book[key] = value
+			})
+			book.save(err => {
+				if (err) {
+					res.send(err)
+				}
+				return res.json(book)
+			})
+			
 		})
 
 	return bookRouter
