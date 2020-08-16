@@ -25,31 +25,34 @@ function routes(Book) {
 
 		})
 
+	bookRouter.use('/books/:bookId', (req, res, next) => {
+		Book.findById(req.params.bookId, (err, book) => {
+			if (err) {
+				return res.send(err)
+			}
+			if (book) {
+				req.book = book
+				return next()
+			}
+			return res.sendStatus(404)
+		})
+	})
+
 	bookRouter.route('/books/:bookId')
-		.get((req, res) => {
-			Book.findById(req.params.bookId, (err, book) => {
-				if (err) {
-					return res.send(err)
-				}
-				return res.send(book)
-			})
-		})
+		.get((req, res) => res.json(req.book))
 		.put((req, res) => {
-			Book.findById(req.params.bookId, (err, book) => {
-				if (err) {
-					return res.send(err)
-				}
 
-				book.title = req.body.title
-				book.genre = req.body.genre
-				book.author = req.body.author
-				book.read = req.body.read
-				book.save()
-				return res.send(book)
-			})
+			const { book } = req
+			book.title = req.body.title
+			book.genre = req.book.genre
+			book.author = req.body.author
+			book.read = req.body.read
+			book.save()
+			return res.send(book)
+
 		})
 
-		return bookRouter
+	return bookRouter
 }
 
 
