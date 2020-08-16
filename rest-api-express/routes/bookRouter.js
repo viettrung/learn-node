@@ -73,7 +73,14 @@ function routes(Book) {
 				}
 				return res.json(book)
 			})
-			
+		})
+		.delete((req, res) => {
+			req.book.remove(err => {
+				if (err) {
+					res.send(err)
+				}
+				res.sendStatus(204)
+			})
 		})
 
 	return bookRouter
