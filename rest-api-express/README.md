@@ -1,6 +1,6 @@
 # Simple rest api using express
 
-## Create docker container 
+## Create docker containers
 ```
 docker-compose run --rm --service-ports api
 ```
@@ -18,6 +18,11 @@ yarn add -D eslint
 "scripts": {
 	"start": "nodemon server.js"
 }
+```
+
+## Start 
+```
+yarn start
 ```
 
 ## APIs
