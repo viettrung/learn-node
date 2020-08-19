@@ -30,7 +30,7 @@ function routes(Book) {
 			book.genre = req.book.genre
 			book.author = req.body.author
 			book.read = req.body.read
-			
+
 			book.save(err => {
 				if (err) {
 					res.send(err)
@@ -39,8 +39,8 @@ function routes(Book) {
 			})
 		})
 		.patch((req, res) => {
-			const {book} = req
-			const {body} = req
+			const { book } = req
+			const { body } = req
 
 			if (body._id) {
 				delete body._id
