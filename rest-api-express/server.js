@@ -4,8 +4,14 @@ const bodyParser = require('body-parser')
 
 const app = express()
 
+var dbLink = ''
+if (process.env.ENV === "TEST") {
+  dbLink = 'mongodb://mongo:27017/bookAPI_TEST'
+} else {
+  dbLink = 'mongodb://mongo:27017/bookAPI'
+}
+
 const PORT = process.env.PORT || 8080
-const dbLink = 'mongodb://mongo:27017/bookAPI'
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -30,6 +36,8 @@ app.get('/', (req, res) => {
   `)
 })
 
-app.listen(PORT, () => {
+app.server = app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}...`)
 })
+
+module.exports = app
