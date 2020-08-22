@@ -23,11 +23,17 @@ function routes(Book) {
 	})
 
 	bookRouter.route('/books/:bookId')
-		.get((req, res) => res.json(req.book))
+		.get((req, res) => {
+			const book = req.book.toJSON()
+			book.links = {
+				filterByGenrer: `http://${req.headers.host}/api/books?genre=${encodeURI(book.genre)}`
+			}
+			res.json(book)
+		})
 		.put((req, res) => {
-			const { book } = req
+			const { book } = req // i.e. book = req.book
 			book.title = req.body.title
-			book.genre = req.book.genre
+			book.genre = req.body.genre
 			book.author = req.body.author
 			book.read = req.body.read
 
